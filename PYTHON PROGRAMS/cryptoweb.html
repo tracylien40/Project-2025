@@ -1,0 +1,91 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background: #ffc107;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+        }
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+        }
+        .charts {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        canvas {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Crypto Dashboard</h2>
+    </div>
+
+    <div class="content">
+        <div class="card">Total Coins Value: <br> <b>$21,267.87</b></div>
+        <div class="card">Total Trades: <br> <b>13 Trades</b></div>
+        <div class="card">Current BTC Price: <br> <b>$3,257.87</b></div>
+
+        <div class="charts">
+            <canvas id="lineChart" width="400" height="200"></canvas>
+            <canvas id="pieChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/mnt/data/Bitcoin%20SV%202.csv")
+                .then(response => response.text())
+                .then(csvText => {
+                    Papa.parse(csvText, {
+                        header: true,
+                        dynamicTyping: true,
+                        complete: function(results) {
+                            const data = results.data.filter(row => row.Date); // Ensure valid data
+                            createCharts(data);
+                        }
+                    });
+                });
+
+
+
+
+

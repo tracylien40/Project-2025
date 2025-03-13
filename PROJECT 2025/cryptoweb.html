@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Crypto Dashboard</h2>
+            <ul>
+                <li>Dashboard</li>
+                <li>Trades</li>
+                <li></li>
+                <li>Settings</li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <header>
+                <h1>Crypto Overview</h1>
+                <input type="search" placeholder="Search..." />
+            </header>
+
+            <section class="stats">
+                <div class="card">
+                    <h3>Total Value of Coins</h3>
+                    <p id="total-coins">$0 (0 BTC)</p>
+                </div>
+                <div class="card">
+                    <h3>Total Value of Commodities</h3>
+                    <p id="total-commodities">$0 (0 BTC)</p>
+                </div>
+                <div class="card">
+                    <h3>Account Value</h3>
+                    <p id="account-value">$0 (0 BTC)</p>
+                </div>
+            </section>
+
+            <section class="charts">
+                <div class="chart">
+                    <h3>Value each Currency in Dollar</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="chart">
+                    <h3>Bitcoin Price Every Hour</h3>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+body {
+    font-family: Arial, sans-serif;
