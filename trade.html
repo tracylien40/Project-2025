@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade - Bitcoin Base</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+    }
+
+    .sidebar {
+      width: 200px;
+      height: 100vh;
+      background: #ffc107;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      margin: 15px 0;
+      padding: 10px;
+      background: white;
+      color: #ffc107;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #d4a000;
+      text-align: center;
+    }
+
+    .trade-section {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 50%;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .trade-button {
+      background-color: #ffc107;
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .trade-button:hover {
+      background-color: #e0a800;
+    }
+
+    #transactionResult {
+      font-weight: bold;
+      color: #333;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .history-section {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+    }
+
+    .history-section h3 {
+      color: #d4a000;
+      margin-bottom: 15px;
+    }
+
+    .history-log {
+      max-height: 300px;
+      overflow-y: auto;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+
+    .history-log p {
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    Crypto Dashboard
+    <a href="about.html">About</a>
+    <a href="Trade.html">Trade</a>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <h2>Trade Bitcoin - Buy or Sell Instantly</h2>
+    <p style="text-align:center;">Today's Bitcoin Price: <span id="btcPrice">30,000</span> USD per BTC</p>
+
+    <!-- Buy Bitcoin Section -->
+    <div class="trade-section">
+      <label for="buyUSD">Enter USD amount to <strong>buy</strong> BTC:</label><br>
+      <input type="number" id="buyUSD" placeholder="Enter USD amount (e.g., 1500)" step="0.01">
+      <br>
+      <button onclick="buyBitcoin()" class="trade-button">Buy Now</button>
+    </div>
+
+    <!-- Sell Bitcoin Section -->
+    <div class="trade-section">
+      <label for="sellUSD">Enter USD amount to <strong>sell</strong> BTC worth:</label><br>
+      <input type="number" id="sellUSD" placeholder="Enter USD amount (e.g., 1000)" step="0.01">
+      <br>
+      <button onclick="sellBitcoin()" class="trade-button">Sell Now</button>
+    </div>
+
+    <!-- Transaction Result -->
+    <div id="transactionResult"></div>
+
+    <!-- Transaction History Section -->
+    <div class="history-section">
+      <h3>Transaction History</h3>
+      <div class="history-log" id="historyLog">
+        <p>No transactions yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const bitcoinPrice = 30000; // Example price per BTC
+
+    function buyBitcoin() {
+      const usdAmount = parseFloat(document.getElementById('buyUSD').value);
+      if (isNaN(usdAmount) || usdAmount <= 0) {
+        displayResult("Please enter a valid USD amount to buy BTC.");
+      } else {
+        const btcAmount = usdAmount / bitcoinPrice;
+        const message = `You bought ${btcAmount.toFixed(6)} BTC for $${usdAmount.toLocaleString()} USD.`;
+        displayResult(message);
+        updateHistory(`BUY: $${usdAmount.toLocaleString()} USD -> ${btcAmount.toFixed(6)} BTC`);
+      }
+      document.getElementById('buyUSD').value = '';
+    }
+
+    function sellBitcoin() {
+      const usdAmount = parseFloat(document.getElementById('sellUSD').value);
+      if (isNaN(usdAmount) || usdAmount <= 0) {
+        displayResult("Please enter a valid USD amount to sell BTC.");
+      } else {
+        const btcAmount = usdAmount / bitcoinPrice;
+        const message = `You sold ${btcAmount.toFixed(6)} BTC for $${usdAmount.toLocaleString()} USD.`;
+        displayResult(message);
+        updateHistory(`SELL: $${usdAmount.toLocaleString()} USD -> ${btcAmount.toFixed(6)} BTC`);
+      }
+      document.getElementById('sellUSD').value = '';
+    }
+
+    function displayResult(message) {
+      document.getElementById('transactionResult').innerText = message;
+    }
+
+    function updateHistory(entry) {
+      const historyLog = document.getElementById('historyLog');
+      if (historyLog.children[0] && historyLog.children[0].innerText === "No transactions yet.") {
+        historyLog.innerHTML = '';
+      }
+      const p = document.createElement('p');
+      p.textContent = `${new Date().toLocaleString()}: ${entry}`;
+      historyLog.prepend(p); // Newest on top
+    }
+  </script>
+
+</body>
+
+</html>
